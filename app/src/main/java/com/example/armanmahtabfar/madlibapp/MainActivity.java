@@ -26,6 +26,8 @@
     /** Request queue for our network requests. */
     private static RequestQueue requestQueue;
 
+    private String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,7 @@
             @Override
             public void onClick(final View v) {
                 Log.d(TAG, "Start API button clicked");
-                //startAPICall();
+                startAPICall();
             }
         });
 
