@@ -6,7 +6,7 @@
  import android.view.View;
  import android.widget.Button;
  import android.widget.EditText;
- import android.widget.ProgressBar;
+ //import android.widget.ProgressBar;
  import android.widget.TextView;
 
  import com.android.volley.Request;
@@ -24,16 +24,28 @@
     private static final String TAG = "Madlib:Main";
 
     /** Request queue for our network requests. */
-    //private static RequestQueue requestQueue;
+    private static RequestQueue requestQueue;
 
-    public String wordToRemove;
-    public String wordToAdd;
-    public String[] lyricsScript;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set up a queue for our  Volley requests
+        //requestQueue = Volley.newRequestQueue(this);
+
+        // Attach the handler to our UI button called newSong
+        Button APICall = findViewById(R.id.newSong);
+        APICall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Log.d(TAG, "Start API button clicked");
+                //startAPICall();
+            }
+        });
+
+
+        //this is the button inputs.
         Button madlib = (Button) findViewById(R.id.madlib);
         madlib.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,12 +61,27 @@
             }
         });
 
-        Button getLyrics = (Button) findViewById(R.id.newSong);
-        getLyrics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+    }
+    void startAPICall() {
+        try {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                    Request.Method.GET,
+                    "",
+                    null,
+                    new Response.Listener<JSONObject>() {
+                         @Override
+                         public void onResponse(final JSONObject response) {
+                             Log.d(TAG, response.toString());
+                         }
+                    }, new Response.ErrorListener() {
+                 @Override
+                 public void onErrorResponse(final VolleyError error) {
+                     Log.w(TAG, error.toString());
+                 }
+            });
+            requestQueue.add(jsonObjectRequest);
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
     }
 }
