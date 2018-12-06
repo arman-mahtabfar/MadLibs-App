@@ -21,31 +21,24 @@
 
 
  public class MainActivity extends AppCompatActivity {
-    /** Default logging tag for messages from the main activity. */
-    private static final String TAG = "Madlib:Main";
 
-    /** these are the buttons that we have on our ui*/
-    EditText editTextToRemove;
-    EditText editTextToAdd;
-    TextView lyricsDisplay;
+     /** Default logging tag for messages from the main activity. */
+     private static final String TAG = "Madlib:Main";
 
-    /** Request queue for our network requests. */
-    private static RequestQueue requestQueue;
-
-    String url = "https://api.musixmatch.com/ws/1.1/track.get?format=jsonp&callback=callback&track_id=15953433&apikey=b311ddd079d65b62142ce7e5dad0b437";
+     /** Request queue for our network requests. */
+     private static RequestQueue requestQueue;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editTextToRemove = (EditText) findViewById(R.id.editText);
-        editTextToAdd = (EditText) findViewById(R.id.editText2);
-        lyricsDisplay = (TextView) findViewById(R.id.textView4);
+        requestQueue = Volley.newRequestQueue(this);
 
-        // Set up a queue for our  Volley requests
-        //requestQueue = Volley.newRequestQueue(this);
+         final EditText editTextToRemove = (EditText) findViewById(R.id.editText);
+         final EditText editTextToAdd = (EditText) findViewById(R.id.editText2);
+         final TextView lyricsDisplay = (TextView) findViewById(R.id.textView4);
 
         // Attach the handler to our UI button called newSong
         Button APICall = findViewById(R.id.newSong);
@@ -53,7 +46,31 @@
             @Override
             public void onClick(final View v) {
                 Log.d(TAG, "Start API button clicked");
-                startAPICall();
+                try {
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                            Request.Method.GET,
+                            "https://api.adviceslip.com/advice",
+                            null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(final JSONObject response) {
+                                    Log.d(TAG, response.toString());
+                                    try {
+                                        lyricsDisplay.setText(response.get("slip").toString());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(final VolleyError error) {
+                            Log.w(TAG, error.toString());
+                        }
+                    });
+                    requestQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -71,32 +88,31 @@
             }
         });
 
-    }
-    void startAPICall() {
-        try {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    url,
-                    null,
-                    new Response.Listener<JSONObject>() {
+     }
+     /**
+      * Make an API call.
+      */
+     void startAPICall() {
+         try {
+             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                     Request.Method.GET,
+                     "https://api.tronalddump.io/random/quote",
+                     null,
+                     new Response.Listener<JSONObject>() {
                          @Override
                          public void onResponse(final JSONObject response) {
                              Log.d(TAG, response.toString());
-                             try {
-                                lyricsDisplay.setText(response.getString("lyrics_body"));
-                             } catch (JSONException e) {
-                                 e.printStackTrace();
-                             }
                          }
-                    }, new Response.ErrorListener() {
+                     }, new Response.ErrorListener() {
                  @Override
                  public void onErrorResponse(final VolleyError error) {
                      Log.w(TAG, error.toString());
                  }
-            });
-            requestQueue.add(jsonObjectRequest);
-        } catch (Exception e) {
+             });
+             requestQueue.add(jsonObjectRequest);
+         } catch (Exception e) {
              e.printStackTrace();
-        }
-    }
+         }
+
+     }
 }
