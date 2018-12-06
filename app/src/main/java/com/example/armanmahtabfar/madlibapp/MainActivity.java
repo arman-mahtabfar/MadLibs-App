@@ -18,7 +18,7 @@
  import org.json.JSONException;
  import org.json.JSONObject;
 
-// hello
+// Arman is a big gay.
  public class MainActivity extends AppCompatActivity {
 
      /** Default loggin tag for messages from the main activity. */
