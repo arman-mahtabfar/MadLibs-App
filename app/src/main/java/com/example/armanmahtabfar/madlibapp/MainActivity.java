@@ -6,7 +6,6 @@
  import android.view.View;
  import android.widget.Button;
  import android.widget.EditText;
- //import android.widget.ProgressBar;
  import android.widget.TextView;
 
  import com.android.volley.Request;
@@ -49,14 +48,14 @@
                 try {
                     JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                             Request.Method.GET,
-                            "https://api.adviceslip.com/advice",
+                            "https://talaikis.com/api/quotes/random/",
                             null,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(final JSONObject response) {
                                     Log.d(TAG, response.toString());
                                     try {
-                                        lyricsDisplay.setText(response.get("slip").toString());
+                                        lyricsDisplay.setText(response.get("quote").toString());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -75,7 +74,7 @@
         });
 
 
-        //this is the button inputs.
+        //this is the button that will madlib based on lyrics
         Button madlib = (Button) findViewById(R.id.madlib);
         madlib.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,36 +82,10 @@
 
                 String toRemove = editTextToRemove.getText().toString();
                 String toAdd = editTextToAdd.getText().toString();
-                String result = toRemove + toAdd;
+                String quote = lyricsDisplay.getText().toString();
+                String result = toRemove + toAdd + quote;
                 lyricsDisplay.setText(result);
             }
         });
-
-     }
-     /**
-      * Make an API call.
-      */
-     void startAPICall() {
-         try {
-             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                     Request.Method.GET,
-                     "https://api.tronalddump.io/random/quote",
-                     null,
-                     new Response.Listener<JSONObject>() {
-                         @Override
-                         public void onResponse(final JSONObject response) {
-                             Log.d(TAG, response.toString());
-                         }
-                     }, new Response.ErrorListener() {
-                 @Override
-                 public void onErrorResponse(final VolleyError error) {
-                     Log.w(TAG, error.toString());
-                 }
-             });
-             requestQueue.add(jsonObjectRequest);
-         } catch (Exception e) {
-             e.printStackTrace();
-         }
-
      }
 }
