@@ -16,6 +16,7 @@
  import com.android.volley.toolbox.JsonObjectRequest;
  import com.android.volley.toolbox.Volley;
 
+ import org.json.JSONException;
  import org.json.JSONObject;
 
 
@@ -23,15 +24,25 @@
     /** Default logging tag for messages from the main activity. */
     private static final String TAG = "Madlib:Main";
 
+    /** these are the buttons that we have on our ui*/
+    EditText editTextToRemove;
+    EditText editTextToAdd;
+    TextView lyricsDisplay;
+
     /** Request queue for our network requests. */
     private static RequestQueue requestQueue;
 
-    private String url;
+    String url = "https://api.musixmatch.com/ws/1.1/track.get?format=jsonp&callback=callback&track_id=15953433&apikey=b311ddd079d65b62142ce7e5dad0b437";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        editTextToRemove = (EditText) findViewById(R.id.editText);
+        editTextToAdd = (EditText) findViewById(R.id.editText2);
+        lyricsDisplay = (TextView) findViewById(R.id.textView4);
 
         // Set up a queue for our  Volley requests
         //requestQueue = Volley.newRequestQueue(this);
@@ -52,9 +63,6 @@
         madlib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editTextToRemove = (EditText) findViewById(R.id.editText);
-                EditText editTextToAdd = (EditText) findViewById(R.id.editText2);
-                TextView lyricsDisplay = (TextView) findViewById(R.id.textView4);
 
                 String toRemove = editTextToRemove.getText().toString();
                 String toAdd = editTextToAdd.getText().toString();
@@ -68,12 +76,17 @@
         try {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    "",
+                    url,
                     null,
                     new Response.Listener<JSONObject>() {
                          @Override
                          public void onResponse(final JSONObject response) {
                              Log.d(TAG, response.toString());
+                             try {
+                                lyricsDisplay.setText(response.getString("lyrics_body"));
+                             } catch (JSONException e) {
+                                 e.printStackTrace();
+                             }
                          }
                     }, new Response.ErrorListener() {
                  @Override
