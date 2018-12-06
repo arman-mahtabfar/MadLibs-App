@@ -27,10 +27,6 @@
      /** Request queue for our network requests. */
      private static RequestQueue requestQueue;
 
-     public static int add() {
-         return 2;
-     }
-
      @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
