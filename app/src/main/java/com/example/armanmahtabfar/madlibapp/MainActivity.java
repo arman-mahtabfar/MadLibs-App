@@ -21,7 +21,7 @@
 // hello
  public class MainActivity extends AppCompatActivity {
 
-     /** Default logging tag for messages from the main activity. */
+     /** Default loggin tag for messages from the main activity. */
      private static final String TAG = "Madlib:Main";
 
      /** Request queue for our network requests. */
