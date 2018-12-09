@@ -3,9 +3,9 @@
     <string name="mark">\?</string>
     <string name="quote">Random Quote</string>
     <string name="mad">MadLib It!</string>
-    <string name="speech">Parts of speech will appear here</string>
-    <string name="words">Enter your words!</string>
-    <string name="q">Quote</string>
+    <string name="speech">\u0020 Parts of speech will appear here</string>
+    <string name="words">\u0020 Enter your words!</string>
+    <string name="q">\u0020 Quote</string>
     <string name="listen">Listen</string>
     <string name="logo">The MadLib Logo. Fair use.</string>
     <string name="back">Back</string>
