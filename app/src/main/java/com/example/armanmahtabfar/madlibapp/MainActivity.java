@@ -7,6 +7,7 @@
  import android.widget.Button;
  import android.widget.EditText;
  import android.widget.TextView;
+ import android.content.Intent;
 
  import com.android.volley.Request;
  import com.android.volley.RequestQueue;
@@ -26,6 +27,10 @@
 
      /** Request queue for our network requests. */
      private static RequestQueue requestQueue;
+
+    public void help(android.view.View v){
+        startActivity(new Intent(MainActivity.this, Help.class));
+    }
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +76,6 @@
                 }
             }
         });
-
 
         //this is the button that will madlib based on lyrics
         Button madlib = (Button) findViewById(R.id.madlib);

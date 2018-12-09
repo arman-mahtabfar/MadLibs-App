@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorBackgroundFloating"
+    android:background="#3e3d3d"
     tools:context=".MainActivity">
 
     <Button
@@ -13,11 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="140dp"
         android:layout_marginRight="140dp"
-        android:layout_marginBottom="8dp"
-        android:text="Random Quote"
+        android:layout_marginBottom="24dp"
+        android:text="@string/quote"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintHorizontal_bias="0.115"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="-1dp"
         android:layout_marginLeft="-1dp"
-        android:layout_marginBottom="8dp"
-        android:text="MadLib IT!"
+        android:layout_marginBottom="24dp"
+        android:text="@string/mad"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.13"
@@ -43,8 +43,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="384dp"
+        android:autofillHints="@string/speech"
         android:ems="10"
-        android:hint="Parts of speech will appear here"
+        android:hint="@string/speech"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/newSong"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,8 +63,9 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="153dp"
         android:layout_marginRight="153dp"
+        android:autofillHints="@string/words"
         android:ems="10"
-        android:hint="Enter your words!"
+        android:hint="@string/words"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -72,22 +74,22 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="346dp"
-        android:layout_height="273dp"
+        android:layout_width="362dp"
+        android:layout_height="332dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
-        android:background="@android:color/darker_gray"
-        android:text="Quote"
+        android:background="#585858"
+        android:text="@string/q"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/madlib"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.102" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -98,8 +100,10 @@
         android:layout_marginEnd="36dp"
         android:layout_marginRight="36dp"
         android:layout_marginBottom="8dp"
+        android:contentDescription="@string/logo"
         app:layout_constraintBottom_toTopOf="@+id/editText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.695"
@@ -115,12 +119,24 @@
         android:layout_marginEnd="43dp"
         android:layout_marginRight="43dp"
         android:layout_marginBottom="8dp"
-        android:text="Listen"
+        android:text="@string/listen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/madlib"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.767" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="58dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="16dp"
+        android:onClick="help"
+        android:text="@string/mark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
