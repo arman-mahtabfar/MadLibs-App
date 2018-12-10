@@ -29,6 +29,16 @@
      /** Quote parsed into words */
      private String[] parsed;
 
+     /**
+      * This is the jsonText as a string.
+      */
+     private String jsonText;
+
+     /**
+      * this is the partofspeech that we are giving the user.
+      */
+     private String partOfSpeech;
+
      /** Default loggin tag for messages from the main activity. */
      private static final String TAG = "Madlib:Main";
 
@@ -66,7 +76,7 @@
          //Return that string
          //}
 
-        // Attach the handler to our UI button called newSong
+        // This button creates
         Button APICall = findViewById(R.id.newSong);
         APICall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,4 +125,28 @@
             }
         });
      }
+
+     /**
+      * takes the jsontext, converts it to a string, and then returns the first Part of Speech
+      * within the definitions at the jsonText.
+      * @param jsonText
+      * @return
+      */
+     private String returnPOSfromJson(String jsonText) {
+         //takes the Json, trims it, splits it with the quotation marks, and finds the first POS.
+         // it then returns the POS.
+
+         jsonText.trim();
+         String[] jsonTextArray = jsonText.split(" ");
+         for(int i = 0; i < jsonTextArray.length; i++) {
+             if (jsonTextArray[i] == "noun") {
+                 return "noun";
+             }
+             if (jsonTextArray[i] == "noun") {
+                 return "noun";
+             }
+         }
+         return "anything";
+     }
+
 }
