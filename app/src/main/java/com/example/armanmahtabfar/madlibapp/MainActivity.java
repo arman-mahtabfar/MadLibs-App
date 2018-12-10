@@ -141,7 +141,7 @@
       * @param jsonText
       * @return
       */
-     private String returnPOSfromJson(String jsonText) {
+     private String returnPOSfromJsonString(String jsonText) {
          //takes the Json, trims it, splits it with the quotation marks, and finds the first POS.
          // it then returns the POS.
 
