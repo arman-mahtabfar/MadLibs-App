@@ -36,7 +36,12 @@
      /**
       * This is the jsonText as a string.
       */
-     private String jsonText;
+     private String jsonDictionaryText;
+
+     /**
+      * this is going to be the dictionary url
+      */
+     private String dictionaryURLRequest;
 
      /**
       * this is the partofspeech that we are giving the user.
@@ -175,5 +180,13 @@
          }
          return "input anything";
      }
+
+     private String requestURL(String word) {
+         String website = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/";
+         String key = "?key=58ca55d6-2ee4-4f29-8e9f-7f7d3d471b8a";
+         this.dictionaryURLRequest = website + word + key;
+         return dictionaryURLRequest;
+     }
+
 
 }
