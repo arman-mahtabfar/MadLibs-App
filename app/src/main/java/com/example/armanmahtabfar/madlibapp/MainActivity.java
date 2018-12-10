@@ -48,13 +48,6 @@
         this.parsed = s.split("");
     }
 
-    //public String getPOS(String s) {
-        //Call API on s to get the JSON Object
-        //Go through the JSON Object to find the POS
-        //Store the POS in a string
-        //Return that string
-    //}
-
      @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +58,13 @@
          final EditText editTextToRemove = (EditText) findViewById(R.id.editText);
          final EditText editTextToAdd = (EditText) findViewById(R.id.editText2);
          final TextView lyricsDisplay = (TextView) findViewById(R.id.textView4);
+
+         //public String getPOS(String s) {
+         //Call API on s to get the JSON Object
+         //Go through the JSON Object to find the POS
+         //Store the POS in a string
+         //Return that string
+         //}
 
         // Attach the handler to our UI button called newSong
         Button APICall = findViewById(R.id.newSong);
@@ -83,6 +83,7 @@
                                     Log.d(TAG, response.toString());
                                     try {
                                         lyricsDisplay.setText(response.get("quote").toString());
+                                        modifyQuote(response.get("quote").toString());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -110,7 +111,6 @@
                 String toAdd = editTextToAdd.getText().toString();
                 String quote = lyricsDisplay.getText().toString();
                 String result = toRemove + toAdd + quote;
-                modifyQuote(result);
                 lyricsDisplay.setText(result);
             }
         });
