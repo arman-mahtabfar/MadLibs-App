@@ -43,6 +43,9 @@
       */
      private String dictionaryURLRequest;
 
+     /** List of the parts of speech that we will print */
+     private ArrayList<String> partsOfSpeech;
+
      /**
       * this is the partofspeech that we are giving the user.
       */
@@ -83,11 +86,10 @@
          final EditText editTextToAdd = (EditText) findViewById(R.id.editText2);
          final TextView lyricsDisplay = (TextView) findViewById(R.id.textView4);
 
-         //public String getPOS(String s) {
+
          //Call API on s to get the JSON Object
-         //Go through the JSON Object to find the POS
-         //Store the POS in a string
-         //Return that string
+         //Convert JSON Object to String
+         //call returnPOSfromJsonString(jsonText)
          //}
 
         // This button creates
@@ -119,6 +121,34 @@
                         }
                     });
                     requestQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    for (int i = 0; i < allWords.size(); i++) {
+                        JsonObjectRequest newObjectRequest = new JsonObjectRequest(
+                                Request.Method.GET,
+                                "https://www.dictionaryapi.com/api/v3/references/collegiate/json/" + allWords.get(i) + "?key=58ca55d6-2ee4-4f29-8e9f-7f7d3d471b8a",
+                                null,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(final JSONObject response) {
+                                        Log.d(TAG, response.toString());
+                                        try {
+                                            lyricsDisplay.setText(response.get("fl").toString());
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(final VolleyError error) {
+                                Log.w(TAG, error.toString());
+                            }
+                        });
+                        requestQueue.add(newObjectRequest);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
