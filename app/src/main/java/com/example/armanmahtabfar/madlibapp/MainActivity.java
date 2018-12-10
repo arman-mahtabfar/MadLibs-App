@@ -39,7 +39,7 @@
         startActivity(new Intent(MainActivity.this, Help.class));
     }
 
-    public void setQuote(String s) {
+    public void modifyQuote(String s) {
         this.quote = s;
         parseQuote(this.quote);
     }
@@ -47,6 +47,8 @@
     public void parseQuote(String s) {
         this.parsed = s.split("");
     }
+
+    public String
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +105,7 @@
                 String toAdd = editTextToAdd.getText().toString();
                 String quote = lyricsDisplay.getText().toString();
                 String result = toRemove + toAdd + quote;
-                setQuote(result);
+                modifyQuote(result);
                 lyricsDisplay.setText(result);
             }
         });
