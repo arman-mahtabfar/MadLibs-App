@@ -176,7 +176,7 @@
 
      /**
       * this will be what changes the dictionary url request based on the quote.
-      * @param word
+      * @param word this is the word that we are finding POS for.
       * @return
       */
      private String dictionaryRequestURL(String word) {
