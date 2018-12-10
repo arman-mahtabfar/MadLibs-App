@@ -8,14 +8,18 @@
  import android.widget.EditText;
  import android.widget.TextView;
  import android.content.Intent;
+ import android.widget.Toast;
 
  import com.android.volley.Request;
  import com.android.volley.RequestQueue;
  import com.android.volley.Response;
  import com.android.volley.VolleyError;
+ import com.android.volley.VolleyLog;
+ import com.android.volley.toolbox.JsonArrayRequest;
  import com.android.volley.toolbox.JsonObjectRequest;
  import com.android.volley.toolbox.Volley;
 
+ import org.json.JSONArray;
  import org.json.JSONException;
  import org.json.JSONObject;
 
@@ -36,20 +40,21 @@
      /**
       * This is the jsonText as a string.
       */
-     private String jsonDictionaryText;
+     private String jsonDictionaryText = "empty Text until button is clicked";
 
-     /**
-      * this is going to be the dictionary url
-      */
-     private String dictionaryURLRequest;
 
      /** List of the parts of speech that we will print */
-     private ArrayList<String> partsOfSpeech;
+     private ArrayList<String> partsOfSpeechOfReplacedWords;
 
      /**
       * this is the partofspeech that we are giving the user.
       */
-     private String partOfSpeech;
+     private String partOfSpeechofReplacedWord;
+
+     /**
+      * this is the replaced word that we are letting the user change in the quote.
+      */
+     private String replacedWord;
 
      /** Default loggin tag for messages from the main activity. */
      private static final String TAG = "Madlib:Main";
@@ -66,6 +71,8 @@
         parseQuote(this.quote);
     }
 
+    // this gets us an ArrayList of all the words we would possibly madlib.
+     //WE NEED TO get this to return an int so we know how many there are. Maybe use a word of random index.
     public void parseQuote(final String s) {
         this.parsed = s.split("([.,!?:;'\"-]|\\s)+");
         allWords = new ArrayList<String>(Arrays.asList(parsed));
@@ -82,15 +89,10 @@
 
         requestQueue = Volley.newRequestQueue(this);
 
-         final EditText editTextToRemove = (EditText) findViewById(R.id.editText);
+         final TextView partOfSpeech = findViewById(R.id.textView3);
          final EditText editTextToAdd = (EditText) findViewById(R.id.editText2);
          final TextView lyricsDisplay = (TextView) findViewById(R.id.textView4);
 
-
-         //Call API on s to get the JSON Object
-         //Convert JSON Object to String
-         //call returnPOSfromJsonString(jsonText)
-         //}
 
         // This button creates
         Button APICall = findViewById(R.id.newSong);
@@ -108,7 +110,10 @@
                                 public void onResponse(final JSONObject response) {
                                     Log.d(TAG, response.toString());
                                     try {
-                                        lyricsDisplay.setText(response.get("quote").toString());
+                                        quote = response.get("quote").toString();
+                                        //in reality we dont want to show this yet.
+                                        //the button to the right should do this.
+                                        lyricsDisplay.setText(quote);
                                         modifyQuote(response.get("quote").toString());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -124,34 +129,6 @@
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                /*try {
-                    for (int i = 0; i < allWords.size(); i++) {
-                        JsonObjectRequest newObjectRequest = new JsonObjectRequest(
-                                Request.Method.GET,
-                                "https://www.dictionaryapi.com/api/v3/references/collegiate/json/" + allWords.get(i) + "?key=58ca55d6-2ee4-4f29-8e9f-7f7d3d471b8a",
-                                null,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(final JSONObject response) {
-                                        Log.d(TAG, response.toString());
-                                        try {
-                                            lyricsDisplay.setText(response.get("fl").toString());
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(final VolleyError error) {
-                                Log.w(TAG, error.toString());
-                            }
-                        });
-                        requestQueue.add(newObjectRequest);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } */
             }
         });
 
@@ -160,63 +137,50 @@
         madlib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Start API button clicked");
+                // i call the dictionaryrequestURL method, whose parameter can change.
+                JsonArrayRequest req = new JsonArrayRequest(dictionaryRequestURL(allWords.get(0)),
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                Log.d(TAG, response.toString());
 
-                String toRemove = editTextToRemove.getText().toString();
-                String toAdd = editTextToAdd.getText().toString();
-                String quote = lyricsDisplay.getText().toString();
-                String result = toRemove + toAdd + quote;
-                lyricsDisplay.setText(result);
+                                try {
+                                    // Parsing json array response
+                                    // loop through each json object
+                                    JSONObject wordDef = (JSONObject) response.get(0);
+                                    String replacedWord = allWords.get(0);
+                                    String POS = wordDef.getString("fl") + " " + replacedWord;
+                                    partOfSpeech.setText(POS);
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d(TAG, "Error: " + error.getMessage());
+                        Toast.makeText(getApplicationContext(),
+                                error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                requestQueue.add(req);
             }
         });
      }
 
      /**
-      * takes the jsontext, converts it to a string, and then returns the first Part of Speech
-      * within the definitions at the jsonText.
-      * @param jsonText
+      * this will be what changes the dictionary url request based on the quote.
+      * @param word
       * @return
       */
-     private String returnPOSfromJsonString(String jsonText) {
-         //takes the Json, trims it, splits it with the quotation marks, and finds the first POS.
-         // it then returns the POS.
-
-         jsonText.trim();
-         String[] jsonTextArray = jsonText.split("([.,!?:;'\"-]|\\s)+");
-         for(int i = 0; i < jsonTextArray.length; i++) {
-             if (jsonTextArray[i] == "noun") {
-                 return "noun";
-             }
-             if (jsonTextArray[i] == "adjective") {
-                 return "adjective";
-             }
-             if (jsonTextArray[i] == "pronoun") {
-                 return "pronoun";
-             }
-             if (jsonTextArray[i] == "verb") {
-                 return "verb";
-             }
-             if (jsonTextArray[i] == "adverb") {
-                 return "adverb";
-             }
-             if (jsonTextArray[i] == "preposition") {
-                 return "preposition";
-             }
-             if (jsonTextArray[i] == "conjunction") {
-                 return "conjunction";
-             }
-             if (jsonTextArray[i] == "interjection") {
-                 return "interjection";
-             }
-         }
-         return "input anything";
-     }
-
-
-     private String requestURL(String word) {
+     private String dictionaryRequestURL(String word) {
          String website = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/";
          String key = "?key=58ca55d6-2ee4-4f29-8e9f-7f7d3d471b8a";
-         this.dictionaryURLRequest = website + word + key;
-         return dictionaryURLRequest;
+         return website + word + key;
+
      }
 
 
