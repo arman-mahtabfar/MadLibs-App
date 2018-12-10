@@ -125,7 +125,7 @@
                     e.printStackTrace();
                 }
 
-                try {
+                /*try {
                     for (int i = 0; i < allWords.size(); i++) {
                         JsonObjectRequest newObjectRequest = new JsonObjectRequest(
                                 Request.Method.GET,
@@ -151,7 +151,7 @@
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                } */
             }
         });
 
@@ -210,6 +210,7 @@
          }
          return "input anything";
      }
+
 
      private String requestURL(String word) {
          String website = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/";
