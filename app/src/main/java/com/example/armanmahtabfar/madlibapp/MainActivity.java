@@ -120,7 +120,7 @@
             }
         });
 
-        //this is the button that will madlib based on lyrics
+        //this is the button that will madlib the lyrics and display both the lyrics
         Button madlib = (Button) findViewById(R.id.madlib);
         madlib.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,16 +146,34 @@
          // it then returns the POS.
 
          jsonText.trim();
-         String[] jsonTextArray = jsonText.split(" ");
+         String[] jsonTextArray = jsonText.split("([.,!?:;'\"-]|\\s)+");
          for(int i = 0; i < jsonTextArray.length; i++) {
              if (jsonTextArray[i] == "noun") {
                  return "noun";
              }
-             if (jsonTextArray[i] == "noun") {
-                 return "noun";
+             if (jsonTextArray[i] == "adjective") {
+                 return "adjective";
+             }
+             if (jsonTextArray[i] == "pronoun") {
+                 return "pronoun";
+             }
+             if (jsonTextArray[i] == "verb") {
+                 return "verb";
+             }
+             if (jsonTextArray[i] == "adverb") {
+                 return "adverb";
+             }
+             if (jsonTextArray[i] == "preposition") {
+                 return "preposition";
+             }
+             if (jsonTextArray[i] == "conjunction") {
+                 return "conjunction";
+             }
+             if (jsonTextArray[i] == "interjection") {
+                 return "interjection";
              }
          }
-         return "anything";
+         return "input anything";
      }
 
 }
