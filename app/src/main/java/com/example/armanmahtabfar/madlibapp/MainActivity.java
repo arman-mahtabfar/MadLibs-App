@@ -19,10 +19,15 @@
  import org.json.JSONException;
  import org.json.JSONObject;
 
+ import java.util.ArrayList;
+
  public class MainActivity extends AppCompatActivity {
 
      /** The quote we will be altering */
-     protected String quote ="place";
+     private String quote ="place";
+
+     /** Quote parsed into words */
+     private String[] parsed;
 
      /** Default loggin tag for messages from the main activity. */
      private static final String TAG = "Madlib:Main";
@@ -36,7 +41,13 @@
 
     public void setQuote(String s) {
         this.quote = s;
+        parseQuote(this.quote);
     }
+
+    public void parseQuote(String s) {
+        this.parsed = s.split("");
+    }
+
      @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
