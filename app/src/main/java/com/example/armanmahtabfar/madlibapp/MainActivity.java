@@ -19,8 +19,10 @@
  import org.json.JSONException;
  import org.json.JSONObject;
 
-// Arman is a big gay.
  public class MainActivity extends AppCompatActivity {
+
+     /** The quote we will be altering */
+     protected String quote ="place";
 
      /** Default loggin tag for messages from the main activity. */
      private static final String TAG = "Madlib:Main";
@@ -32,6 +34,9 @@
         startActivity(new Intent(MainActivity.this, Help.class));
     }
 
+    public void setQuote(String s) {
+        this.quote = s;
+    }
      @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +92,7 @@
                 String toAdd = editTextToAdd.getText().toString();
                 String quote = lyricsDisplay.getText().toString();
                 String result = toRemove + toAdd + quote;
+                setQuote(result);
                 lyricsDisplay.setText(result);
             }
         });
