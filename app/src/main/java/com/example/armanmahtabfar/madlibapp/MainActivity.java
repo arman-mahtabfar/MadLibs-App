@@ -148,6 +148,7 @@
                             }
                         });
                         requestQueue.add(newObjectRequest);
+                        partsOfSpeech.add(response.get("fl").toString());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
