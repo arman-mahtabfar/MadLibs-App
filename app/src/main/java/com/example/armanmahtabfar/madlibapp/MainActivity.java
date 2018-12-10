@@ -111,6 +111,7 @@
                                         //the button to the right should do this.
                                         //lyricsDisplay.setText(quote);
                                         modifyQuote(response.get("quote").toString());
+                                        lyricsDisplay.setText("???");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
