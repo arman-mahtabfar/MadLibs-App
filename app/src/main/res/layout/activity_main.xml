@@ -92,6 +92,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="44dp"
+        android:background="@drawable/mybautton"
         android:text="Show"
         app:layout_constraintBottom_toBottomOf="@+id/madlib"
         app:layout_constraintStart_toEndOf="@+id/madlib"
