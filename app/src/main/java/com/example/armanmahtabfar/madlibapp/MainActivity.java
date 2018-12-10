@@ -58,14 +58,14 @@
         parseQuote(this.quote);
     }
 
-    public void parseQuote(String s) {
-        this.parsed = s.split("");
+    public void parseQuote(final String s) {
+        this.parsed = s.split("([.,!?:;'\"-]|\\s)+");
         allWords = new ArrayList<String>(Arrays.asList(parsed));
-       //for (int i = allWords.size(); i >= 0; i--) {
-       //     if (allWords.get(i).length() <= 3)) {
-//
-//            }
-//        }
+       for (int i = allWords.size() - 1; i >= 0; i--) {
+            if (allWords.get(i).length() <= 3) {
+                allWords.remove(i);
+            }
+        }
     }
      @Override
      protected void onCreate(Bundle savedInstanceState) {
