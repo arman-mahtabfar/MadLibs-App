@@ -48,7 +48,12 @@
         this.parsed = s.split("");
     }
 
-    public String
+    //public String getPOS(String s) {
+        //Call API on s to get the JSON Object
+        //Go through the JSON Object to find the POS
+        //Store the POS in a string
+        //Return that string
+    //}
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
