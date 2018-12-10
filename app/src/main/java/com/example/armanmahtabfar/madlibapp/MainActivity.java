@@ -31,18 +31,14 @@
      /** The quote we will be altering */
      private String quote ="placeholder";
 
+
      /** Quote parsed into words */
      private String[] parsed;
 
      /** All the viable words for the MadLib */
      private ArrayList<String> allWords;
 
-     /**
-      * This is the jsonText as a string.
-      */
-     private String jsonDictionaryText = "empty Text until button is clicked";
-
-
+    //only if we want to include multiple words. Lets get one first.
      /** List of the parts of speech that we will print */
      private ArrayList<String> partsOfSpeechOfReplacedWords;
 
@@ -67,7 +63,7 @@
     }
 
     public void modifyQuote(String s) {
-        this.quote = s;
+        //this.quote = s;
         parseQuote(this.quote);
     }
 
@@ -113,7 +109,7 @@
                                         quote = response.get("quote").toString();
                                         //in reality we dont want to show this yet.
                                         //the button to the right should do this.
-                                        lyricsDisplay.setText(quote);
+                                        //lyricsDisplay.setText(quote);
                                         modifyQuote(response.get("quote").toString());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -144,12 +140,11 @@
                             @Override
                             public void onResponse(JSONArray response) {
                                 Log.d(TAG, response.toString());
-
                                 try {
                                     // Parsing json array response
                                     // loop through each json object
                                     JSONObject wordDef = (JSONObject) response.get(0);
-                                    String replacedWord = allWords.get(0);
+                                    replacedWord = allWords.get(0);
                                     String POS = wordDef.getString("fl") + " " + replacedWord;
                                     partOfSpeech.setText(POS);
 
@@ -169,6 +164,14 @@
                 requestQueue.add(req);
             }
         });
+        Button ShowQuote = findViewById(R.id.ShowQuote);
+        ShowQuote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set the text to the madlibquotereturn string below with proper perameters.
+                lyricsDisplay.setText(madlibQuoteReturn(quote, editTextToAdd.getText().toString()));
+            }
+        });
      }
 
      /**
@@ -180,8 +183,11 @@
          String website = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/";
          String key = "?key=58ca55d6-2ee4-4f29-8e9f-7f7d3d471b8a";
          return website + word + key;
-
      }
 
+     //this will modify the origial quote to the string that we want.
+     private String madlibQuoteReturn(String quote, String replacer) {
+         return quote.replace(replacedWord, replacer);
+     }
 
 }
