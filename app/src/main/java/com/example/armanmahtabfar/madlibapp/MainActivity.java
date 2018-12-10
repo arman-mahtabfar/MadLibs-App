@@ -20,14 +20,18 @@
  import org.json.JSONObject;
 
  import java.util.ArrayList;
+ import java.util.Arrays;
 
  public class MainActivity extends AppCompatActivity {
 
      /** The quote we will be altering */
-     private String quote ="place";
+     private String quote ="placeholder";
 
      /** Quote parsed into words */
      private String[] parsed;
+
+     /** All the viable words for the MadLib */
+     private ArrayList<String> allWords;
 
      /**
       * This is the jsonText as a string.
@@ -56,8 +60,13 @@
 
     public void parseQuote(String s) {
         this.parsed = s.split("");
+        allWords = new ArrayList<String>(Arrays.asList(parsed));
+       //for (int i = allWords.size(); i >= 0; i--) {
+       //     if (allWords.get(i).length() <= 3)) {
+//
+//            }
+//        }
     }
-
      @Override
      protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
