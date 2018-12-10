@@ -38,6 +38,8 @@
      /** All the viable words for the MadLib */
      private ArrayList<String> allWords;
 
+     private int allWordsSize;
+
     //only if we want to include multiple words. Lets get one first.
      /** List of the parts of speech that we will print */
      private ArrayList<String> partsOfSpeechOfReplacedWords;
@@ -111,7 +113,7 @@
                                         //the button to the right should do this.
                                         //lyricsDisplay.setText(quote);
                                         modifyQuote(response.get("quote").toString());
-                                        lyricsDisplay.setText("???");
+                                        lyricsDisplay.setText("Random Quote Found");
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -146,7 +148,7 @@
                                     // loop through each json object
                                     JSONObject wordDef = (JSONObject) response.get(0);
                                     replacedWord = allWords.get(0);
-                                    String POS = wordDef.getString("fl") + " " + replacedWord;
+                                    String POS = wordDef.getString("fl");// + " " + replacedWord;
                                     partOfSpeech.setText(POS);
 
 
@@ -170,7 +172,12 @@
             @Override
             public void onClick(View v) {
                 //set the text to the madlibquotereturn string below with proper perameters.
-                lyricsDisplay.setText(madlibQuoteReturn(quote, editTextToAdd.getText().toString()));
+                lyricsDisplay.setText("MadLib: \n");
+                lyricsDisplay.append(madlibQuoteReturn(quote, editTextToAdd.getText().toString()));
+                lyricsDisplay.append("\n");
+                lyricsDisplay.append("   \n");
+                lyricsDisplay.append("Original Quote:  \n");
+                lyricsDisplay.append(quote);
             }
         });
      }
