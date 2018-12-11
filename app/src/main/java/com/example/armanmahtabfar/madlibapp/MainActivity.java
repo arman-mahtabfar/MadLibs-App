@@ -11,6 +11,11 @@
  import android.content.Intent;
  import android.widget.Toast;
 
+ import android.os.Bundle;
+ import android.support.v7.app.AppCompatActivity;
+ import android.text.method.ScrollingMovementMethod;
+ import android.widget.TextView;
+
  import com.android.volley.Request;
  import com.android.volley.RequestQueue;
  import com.android.volley.Response;
@@ -78,7 +83,10 @@
         parseQuote(this.quote);
     }
 
-    // this gets us an ArrayList of all the words we would possibly madlib.
+
+
+
+     // this gets us an ArrayList of all the words we would possibly madlib.
      //WE NEED TO get this to return an int so we know how many there are. Maybe use a word of random index.
     public void parseQuote(final String s) {
         this.parsed = s.split("([.,!?:;'\"-]|\\s)+");
@@ -90,6 +98,7 @@
        }
        Collections.shuffle(allWords);
     }
+
     public boolean check(ArrayList<String> a) {
         if (a.size() >= 3) {
             return true;
@@ -107,6 +116,8 @@
          final TextView partOfSpeech = findViewById(R.id.textView3);
          final EditText editTextToAdd = (EditText) findViewById(R.id.editText2);
          final TextView lyricsDisplay = (TextView) findViewById(R.id.textView4);
+
+         lyricsDisplay.setMovementMethod(new ScrollingMovementMethod());
 
 
         // This button creates
@@ -236,7 +247,7 @@
         ShowQuote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //set the text to the madlibquotereturn string below with proper perameters.
+                //set the text to the madlibquotereturn string below with proper parameters.
                 newwords = editTextToAdd.getText().toString().split(",");
                 lyricsDisplay.setText("MadLib: \n");
                 if (newwords.length == 1) {
@@ -244,7 +255,6 @@
                 } else {
                     lyricsDisplay.append(madlibQuoteReturn(quote, newwords[0], newwords[1], newwords[2]));
                 }
-                lyricsDisplay.append(quote);
                 lyricsDisplay.append("\n");
                 lyricsDisplay.append("   \n");
                 lyricsDisplay.append("Original Quote:  \n");
