@@ -151,7 +151,7 @@
             }
         });
 
-        //this is the button that will madlib the lyrics and display both the lyrics
+        //this is the button that will madlib the lyriqs and display both the lyrics
         Button madlib = (Button) findViewById(R.id.madlib);
         madlib.setOnClickListener(new View.OnClickListener() {
             @Override
