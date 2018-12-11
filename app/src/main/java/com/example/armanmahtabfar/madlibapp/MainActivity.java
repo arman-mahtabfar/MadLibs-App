@@ -1,5 +1,6 @@
  package com.example.armanmahtabfar.madlibapp;
 
+ import java.util.*;
  import android.os.Bundle;
  import android.support.v7.app.AppCompatActivity;
  import android.util.Log;
@@ -25,15 +26,20 @@
 
  import java.util.ArrayList;
  import java.util.Arrays;
+ import java.util.concurrent.ThreadLocalRandom;
 
  public class MainActivity extends AppCompatActivity {
 
+     private int flocka = 0;
+
      /** The quote we will be altering */
      private String quote ="placeholder";
-
-
+     private String newQuote;
      /** Quote parsed into words */
      private String[] parsed;
+
+     /** Array of replaced strings */
+     private String[] newwords = new String[3];
 
      /** All the viable words for the MadLib */
      private ArrayList<String> allWords;
@@ -53,6 +59,8 @@
       * this is the replaced word that we are letting the user change in the quote.
       */
      private String replacedWord;
+     private String replace1;
+     private String replace2;
 
      /** Default loggin tag for messages from the main activity. */
      private static final String TAG = "Madlib:Main";
@@ -65,7 +73,8 @@
     }
 
     public void modifyQuote(String s) {
-        //this.quote = s;
+        this.quote = s;
+        this.newQuote = s;
         parseQuote(this.quote);
     }
 
@@ -75,9 +84,17 @@
         this.parsed = s.split("([.,!?:;'\"-]|\\s)+");
         allWords = new ArrayList<String>(Arrays.asList(parsed));
        for (int i = allWords.size() - 1; i >= 0; i--) {
-            if (allWords.get(i).length() <= 3) {
+            if (allWords.get(i).length() <= 4) {
                 allWords.remove(i);
             }
+       }
+       Collections.shuffle(allWords);
+    }
+    public boolean check(ArrayList<String> a) {
+        if (a.size() >= 3) {
+            return true;
+        } else {
+            return false;
         }
     }
      @Override
@@ -136,48 +153,102 @@
         madlib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Start API button clicked");
-                // i call the dictionaryrequestURL method, whose parameter can change.
-                JsonArrayRequest req = new JsonArrayRequest(dictionaryRequestURL(allWords.get(0)),
-                        new Response.Listener<JSONArray>() {
+                if (check(allWords)) {
+                    while (flocka <= 2) {
+                        Log.d(TAG, "Start API button clicked");
+                        // i call the dictionaryrequestURL method, whose parameter can change.
+                        JsonArrayRequest req = new JsonArrayRequest(dictionaryRequestURL(allWords.get(flocka)),
+                                new Response.Listener<JSONArray>() {
+                                    @Override
+                                    public void onResponse(JSONArray response) {
+                                        Log.d(TAG, response.toString());
+                                        try {
+                                            // Parsing json array response
+                                            // loop through each json object
+                                            JSONObject wordDef = (JSONObject) response.get(0);
+                                            replacedWord = allWords.get(0);
+                                            replace1 = allWords.get(1);
+                                            replace2 = allWords.get(2);
+                                            if (flocka == 0) {
+                                                String POS = wordDef.getString("fl");// + " " + replacedWord;
+                                                partOfSpeech.setText(POS);
+                                            }
+                                            if (flocka == 1) {
+                                                String POS1 = wordDef.getString("fl");// + " " + replace1;
+                                                partOfSpeech.append(", " + POS1);
+                                            }
+                                            if (flocka == 2) {
+                                                String POS2 = wordDef.getString("fl");// + " " + replace2;
+                                                partOfSpeech.append(", " + POS2);
+                                            }
+                                            flocka++;
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
                             @Override
-                            public void onResponse(JSONArray response) {
-                                Log.d(TAG, response.toString());
-                                try {
-                                    // Parsing json array response
-                                    // loop through each json object
-                                    JSONObject wordDef = (JSONObject) response.get(0);
-                                    replacedWord = allWords.get(0);
-                                    String POS = wordDef.getString("fl");// + " " + replacedWord;
-                                    partOfSpeech.setText(POS);
-
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                            public void onErrorResponse(VolleyError error) {
+                                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                                Toast.makeText(getApplicationContext(),
+                                        error.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d(TAG, "Error: " + error.getMessage());
-                        Toast.makeText(getApplicationContext(),
-                                error.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+                        requestQueue.add(req);
+                        flocka++;
                     }
-                });
-                requestQueue.add(req);
+                } else {
+                    Log.d(TAG, "Start API button clicked");
+                    // i call the dictionaryrequestURL method, whose parameter can change.
+                    JsonArrayRequest req = new JsonArrayRequest(dictionaryRequestURL(allWords.get(0)),
+                            new Response.Listener<JSONArray>() {
+                                @Override
+                                public void onResponse(JSONArray response) {
+                                    Log.d(TAG, response.toString());
+                                    try {
+                                        // Parsing json array response
+                                        // loop through each json object
+                                        JSONObject wordDef = (JSONObject) response.get(0);
+                                        replacedWord = allWords.get(0);
+                                        String POS = wordDef.getString("fl");// + " " + replacedWord;
+                                        partOfSpeech.setText(POS);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            VolleyLog.d(TAG, "Error: " + error.getMessage());
+                            Toast.makeText(getApplicationContext(),
+                                    error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    requestQueue.add(req);
+                }
+                if (flocka != 0) {
+                    flocka = 0;
+                }
             }
         });
+
         Button ShowQuote = findViewById(R.id.ShowQuote);
         ShowQuote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //set the text to the madlibquotereturn string below with proper perameters.
+                newwords = editTextToAdd.getText().toString().split(",");
                 lyricsDisplay.setText("MadLib: \n");
-                lyricsDisplay.append(madlibQuoteReturn(quote, editTextToAdd.getText().toString()));
+                if (newwords.length == 1) {
+                    lyricsDisplay.append(madlibQuoteReturn(quote, newwords[0]));
+                } else {
+                    lyricsDisplay.append(madlibQuoteReturn(quote, newwords[0], newwords[1], newwords[2]));
+                }
+                lyricsDisplay.append(quote);
                 lyricsDisplay.append("\n");
                 lyricsDisplay.append("   \n");
                 lyricsDisplay.append("Original Quote:  \n");
-                lyricsDisplay.append(quote);
+                lyricsDisplay.append(newQuote);
             }
         });
      }
@@ -193,9 +264,15 @@
          return website + word + key;
      }
 
-     //this will modify the origial quote to the string that we want.
+     //this will modify the original quote to the string that we want.
      private String madlibQuoteReturn(String quote, String replacer) {
          return quote.replace(replacedWord, replacer);
      }
 
+     private String madlibQuoteReturn(String quote, String one, String two, String three) {
+         quote = quote.replace(replacedWord, one);
+         quote = quote.replace(replace1, two);
+         quote = quote.replace(replace2, three);
+         return quote;
+     }
 }
