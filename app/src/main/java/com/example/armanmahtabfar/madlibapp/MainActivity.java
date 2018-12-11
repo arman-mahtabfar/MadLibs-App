@@ -11,11 +11,6 @@
  import android.content.Intent;
  import android.widget.Toast;
 
- import android.os.Bundle;
- import android.support.v7.app.AppCompatActivity;
- import android.text.method.ScrollingMovementMethod;
- import android.widget.TextView;
-
  import com.android.volley.Request;
  import com.android.volley.RequestQueue;
  import com.android.volley.Response;
@@ -116,9 +111,6 @@
          final TextView partOfSpeech = findViewById(R.id.textView3);
          final EditText editTextToAdd = (EditText) findViewById(R.id.editText2);
          final TextView lyricsDisplay = (TextView) findViewById(R.id.textView4);
-
-         lyricsDisplay.setMovementMethod(new ScrollingMovementMethod());
-
 
         // This button creates
         Button APICall = findViewById(R.id.newSong);

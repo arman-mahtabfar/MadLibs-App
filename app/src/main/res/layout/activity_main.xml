@@ -68,7 +68,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/more"
-        android:scrollbars="vertical"
         android:text="@string/q"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/newSong"
