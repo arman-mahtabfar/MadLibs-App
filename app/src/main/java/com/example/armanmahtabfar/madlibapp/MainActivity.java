@@ -30,7 +30,7 @@
 
  public class MainActivity extends AppCompatActivity {
 
-     private int flocka = 0;
+     private int wordsLibbedCount = 0;
 
      /** The quote we will be altering */
      private String quote ="placeholder";
@@ -44,16 +44,6 @@
      /** All the viable words for the MadLib */
      private ArrayList<String> allWords;
 
-     private int allWordsSize;
-
-    //only if we want to include multiple words. Lets get one first.
-     /** List of the parts of speech that we will print */
-     private ArrayList<String> partsOfSpeechOfReplacedWords;
-
-     /**
-      * this is the partofspeech that we are giving the user.
-      */
-     private String partOfSpeechofReplacedWord;
 
      /**
       * this is the replaced word that we are letting the user change in the quote.
@@ -157,10 +147,10 @@
             @Override
             public void onClick(View v) {
                 if (check(allWords)) {
-                    while (flocka <= 2) {
+                    while (wordsLibbedCount <= 2) {
                         Log.d(TAG, "Start API button clicked");
                         // i call the dictionaryrequestURL method, whose parameter can change.
-                        JsonArrayRequest req = new JsonArrayRequest(dictionaryRequestURL(allWords.get(flocka)),
+                        JsonArrayRequest req = new JsonArrayRequest(dictionaryRequestURL(allWords.get(wordsLibbedCount)),
                                 new Response.Listener<JSONArray>() {
                                     @Override
                                     public void onResponse(JSONArray response) {
@@ -172,19 +162,19 @@
                                             replacedWord = allWords.get(0);
                                             replace1 = allWords.get(1);
                                             replace2 = allWords.get(2);
-                                            if (flocka == 0) {
+                                            if (wordsLibbedCount == 0) {
                                                 String POS = wordDef.getString("fl");// + " " + replacedWord;
                                                 partOfSpeech.setText(POS);
                                             }
-                                            if (flocka == 1) {
+                                            if (wordsLibbedCount == 1) {
                                                 String POS1 = wordDef.getString("fl");// + " " + replace1;
                                                 partOfSpeech.append(", " + POS1);
                                             }
-                                            if (flocka == 2) {
+                                            if (wordsLibbedCount == 2) {
                                                 String POS2 = wordDef.getString("fl");// + " " + replace2;
                                                 partOfSpeech.append(", " + POS2);
                                             }
-                                            flocka++;
+                                            wordsLibbedCount++;
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -198,7 +188,7 @@
                             }
                         });
                         requestQueue.add(req);
-                        flocka++;
+                        wordsLibbedCount++;
                     }
                 } else {
                     Log.d(TAG, "Start API button clicked");
@@ -229,8 +219,8 @@
                     });
                     requestQueue.add(req);
                 }
-                if (flocka != 0) {
-                    flocka = 0;
+                if (wordsLibbedCount != 0) {
+                    wordsLibbedCount = 0;
                 }
             }
         });
